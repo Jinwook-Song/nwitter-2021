@@ -1,6 +1,8 @@
 import { authService } from "fbase";
 import { useState } from "react";
 
+const inputStyles = {};
+
 // eslint-disable-next-line
 export default () => {
   const [email, setEmail] = useState("");
@@ -38,7 +40,7 @@ export default () => {
   const toggleAccount = () => setNewAccount((prev) => !prev);
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="container">
         <input
           name="email"
           type="email"
@@ -46,6 +48,7 @@ export default () => {
           required
           value={email}
           onChange={onChange}
+          className="authInput"
         />
         <input
           name="password"
@@ -54,14 +57,16 @@ export default () => {
           required
           value={password}
           onChange={onChange}
+          className="authInput"
         />
         <input
           type="submit"
           value={newAccount ? "Create Account" : "Sign In"}
+          className="authInput"
         />
-        {error}
+        {error && <span className="authError">{error}</span>}
       </form>
-      <span onClick={toggleAccount}>
+      <span onClick={toggleAccount} className="authSwitch">
         {newAccount ? "Sign In" : "Create Account"}
       </span>
     </>

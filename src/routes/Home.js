@@ -8,7 +8,7 @@ export default ({ userObj }) => {
   const [nweets, setNweets] = useState([]);
 
   useEffect(() => {
-    dbService
+    const getData = dbService
       .collection("nweets")
       .orderBy("createdAt", "desc")
       .onSnapshot((snapshot) => {
@@ -18,12 +18,13 @@ export default ({ userObj }) => {
         }));
         setNweets(nweetArray);
       });
+    return () => getData();
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <NweetFactory userObj={userObj} />
-      <div>
+      <div style={{ marginTop: 30 }}>
         {nweets.map((nweet) => (
           <Nweet
             key={nweet.id}

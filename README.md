@@ -2,4 +2,8 @@
 
 Twitter (mini)clone with React and Firebase
 
-## always notice reference
+## Always notice reference
+
+## Challenge
+
+change to typescript or prop types
