@@ -10,18 +10,34 @@ function App() {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
-        setUserObj(user);
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          updateProfile: (args) => user.updateProfile(args),
+        });
       } else {
         setIsLoggedIn(false);
       }
       setInit(true);
     });
   }, []);
-
+  const refreshUser = () => {
+    const user = authService.currentUser;
+    console.log(authService.currentUser.displayName);
+    setUserObj({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfile: (args) => user.updateProfile(args),
+    });
+  };
   return (
     <>
       {init ? (
-        <Router isLoggedIn={isLoggedIn} userObj={userObj} />
+        <Router
+          refreshUser={refreshUser}
+          isLoggedIn={isLoggedIn}
+          userObj={userObj}
+        />
       ) : (
         "Initializing..."
       )}

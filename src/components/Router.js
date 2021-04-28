@@ -10,7 +10,7 @@ import Profile from "routes/Profile";
 import Navigation from "components/Navigation";
 
 // eslint-disable-next-line
-export default ({ isLoggedIn, userObj }) => {
+export default ({ refreshUser, isLoggedIn, userObj }) => {
   return (
     <Router>
       {isLoggedIn && <Navigation userObj={userObj} />}
@@ -21,7 +21,7 @@ export default ({ isLoggedIn, userObj }) => {
               <Home userObj={userObj} />
             </Route>
             <Route exact path="/profile">
-              <Profile userObj={userObj} />
+              <Profile userObj={userObj} refreshUser={refreshUser} />
             </Route>
             {/* <Redirect from="*" to="/" /> */}
           </>
