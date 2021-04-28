@@ -1,9 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { authService, dbService } from "../fbase";
 
 // eslint-disable-next-line
 export default ({ userObj }) => {
+  const [newDisplayName, setNewDisplayName] = useState(
+    userObj.displayName ? userObj.displayName : ""
+  );
   const history = useHistory();
   const onLogOutClick = () => {
     authService.signOut();
@@ -19,8 +22,31 @@ export default ({ userObj }) => {
   useEffect(() => {
     getMyNweets();
   }, []);
+  const onChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setNewDisplayName(value);
+  };
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    if (userObj.displayName !== newDisplayName) {
+      await userObj.updateProfile({
+        displayName: newDisplayName,
+      });
+    }
+  };
   return (
     <>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          value={newDisplayName}
+          type="text"
+          placeholder="Display name"
+        />
+        <input type="submit" value="Update Profile" />
+      </form>
       <button onClick={onLogOutClick}>Log Out</button>
     </>
   );
