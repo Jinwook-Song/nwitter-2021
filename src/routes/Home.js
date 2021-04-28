@@ -1,5 +1,6 @@
 import Nweet from "components/Nweet";
-import { dbService } from "fbase";
+import { v4 as uuidv4 } from "uuid";
+import { dbService, storageService } from "fbase";
 import { useEffect, useState } from "react";
 
 // eslint-disable-next-line
@@ -27,12 +28,15 @@ export default ({ userObj }) => {
   };
   const onSubmit = async (event) => {
     event.preventDefault();
-    await dbService.collection("nweets").add({
-      text: nweet,
-      createdAt: new Date(),
-      creatorId: userObj.uid,
-    });
-    setNweet("");
+    const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+    const response = await fileRef.putString(attachment, "data_url");
+    console.log(response);
+    // await dbService.collection("nweets").add({
+    //   text: nweet,
+    //   createdAt: new Date(),
+    //   creatorId: userObj.uid,
+    // });
+    // setNweet("");
   };
   const onFileChange = (event) => {
     const {
