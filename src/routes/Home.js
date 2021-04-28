@@ -1,9 +1,23 @@
 import { dbService } from "fbase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // eslint-disable-next-line
 export default () => {
   const [nweet, setNweet] = useState("");
+  const [nweets, setNweets] = useState([]);
+  const getNweets = async () => {
+    const dbNweets = await dbService.collection("nweets").get();
+    dbNweets.forEach((document) => {
+      const nweetObject = {
+        ...document.data(),
+        id: document.id,
+      };
+      setNweets((prev) => [nweetObject, ...prev]);
+    });
+  };
+  useEffect(() => {
+    getNweets();
+  }, []);
   const onChange = (event) => {
     const {
       target: { value },
@@ -18,6 +32,7 @@ export default () => {
     });
     setNweet("");
   };
+  console.log(nweets);
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -30,6 +45,13 @@ export default () => {
         />
         <input type="submit" value="Nweet" />
       </form>
+      <div>
+        {nweets.map((nweet) => (
+          <div key={nweet.id}>
+            <h4>{nweet.nweet}</h4>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
