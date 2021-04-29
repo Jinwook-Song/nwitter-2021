@@ -25,7 +25,7 @@ export default ({ userObj }) => (
         >
           <FontAwesomeIcon icon={faUser} color={"#04AAFF"} size="2x" />
           <span style={{ marginTop: 10 }}>
-            {userObj.displayName
+            {userObj?.displayName?.length
               ? `${userObj.displayName}'s Profile`
               : "Profile"}
           </span>
